@@ -11,6 +11,7 @@ local debug_getinfo = debug.getinfo
 --	Call
 --		name (string)
 --		calls (int)
+--		wasTailCalled (bool)
 --		profiler (LuaProfiler)
 --		next (Array of Call)
 
@@ -57,6 +58,7 @@ function Profiler.Start(excludeCalledMs)
 	{
 		name = "root",
 		calls = 0,
+		wasTailCalled = false,
 		profiler = create_profiler(),
 		next = { },
 	}
@@ -68,8 +70,10 @@ function Profiler.Start(excludeCalledMs)
 	debug.sethook(function(type)
 		local info = debug_getinfo(2)
 
-		if type == "call" then
-			local prevCall = stack[stack_count]
+		local isTailCall = type == "tail call"
+
+		local prevCall = stack[stack_count]
+		if isTailCall or type == "call" then
 			if excludeCalledMs then
 				prevCall.profiler.stop()
 			end
@@ -97,12 +101,14 @@ function Profiler.Start(excludeCalledMs)
 				{
 					name = name,
 					calls = 1,
+					wasTailCalled = isTailCall,
 					profiler = create_profiler(),
 				}
 				prevCall_next[name] = currCall
 				profilerStartFunc = currCall.profiler.reset
 			else
 				currCall.calls = currCall.calls + 1
+				currCall.wasTailCalled = isTailCall
 				profilerStartFunc = currCall.profiler.restart
 			end
 
@@ -110,10 +116,11 @@ function Profiler.Start(excludeCalledMs)
 			stack[stack_count] = currCall
 
 			profilerStartFunc()
+		end
 
-		elseif type == "return" then
-			if stack_count > 0 then
-				stack[stack_count].profiler.stop()
+		if isTailCall or type == "return" then
+			while stack_count > 0 and prevCall.wasTailCalled do
+				prevCall.profiler.stop()
 				stack[stack_count] = nil
 				stack_count = stack_count - 1
 
