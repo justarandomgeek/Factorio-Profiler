@@ -1,0 +1,12 @@
+{
+    "name": "profiler",
+    "version": "0.17.0",
+    "factorio_version": "0.17",
+    "title": "Lua Profiler",
+    "author": "Boodals, justarandomgeek",
+    "homepage": "https://github.com/Boodals/Factorio-Profiler",
+    "contact": "",
+    "description": "Boodal's lua profiler for identifying performance intensive parts of mods, wrapped in a mod for convenient cross-mod requires. This is a developer tool, not meant for actual gameplay. It is intentionally desync unsafe. Do not use it in multiplayer. ",
+    "dependencies": ["base"]
+  }
+  
