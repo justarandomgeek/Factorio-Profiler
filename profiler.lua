@@ -22,13 +22,14 @@ local Profiler =
 	IsRunning = false,
 }
 
-
-commands.add_command("startProfiler", "Starts profiling", function(command)
-	Profiler.Start(command.parameter ~= nil)
-end)
-commands.add_command("stopProfiler", "Stops profiling", function(command)
-	Profiler.Stop(command.parameter ~= nil, nil)
-end)
+if not No_Profiler_Commands then
+	commands.add_command("startProfiler", "Starts profiling", function(command)
+		Profiler.Start(command.parameter ~= nil)
+	end)
+	commands.add_command("stopProfiler", "Stops profiling", function(command)
+		Profiler.Stop(command.parameter ~= nil, nil)
+	end)
+end
 
 
 local assert_raw = assert
