@@ -1,7 +1,7 @@
 {
     "name": "profiler",
-    "version": "0.17.1",
-    "factorio_version": "0.17",
+    "version": "0.18.0",
+    "factorio_version": "0.18",
     "title": "Lua Profiler",
     "author": "Boodals, justarandomgeek",
     "homepage": "https://github.com/Boodals/Factorio-Profiler",
