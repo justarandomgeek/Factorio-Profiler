@@ -25,12 +25,6 @@ local ignoredFunctions =
 	[debug.sethook] = true
 }
 
-local namedSources =
-{
-	["[string \"local n, v = \"serpent\", \"0.30\" -- (C) 2012-17...\"]"] = "serpent",
-}
-
-
 local function startCommand(command)
 	Profiler.Start(command.parameter ~= nil)
 end
@@ -100,10 +94,7 @@ function Profiler.Start(excludeCalledMs)
 				name = string_format("C function %q", info.name or "anonymous")
 			else
 				local source = info.short_src
-				local namedSource = namedSources[source]
-				if namedSource ~= nil then
-					source = namedSource
-				elseif string_sub(source, 1, 1) == "@" then
+				if string_sub(source, 1, 1) == "@" then
 					source = string_sub(source, 1)
 				end
 				name = string_format("%q in %q, line %d", info.name or "anonymous", source, info.linedefined)
