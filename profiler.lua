@@ -2,9 +2,7 @@
 local table_sort = table.sort
 local string_rep = string.rep
 local string_format = string.format
-local string_len = string.len
 local string_sub = string.sub
-local string_gsub = string.gsub
 local debug_getinfo = debug.getinfo
 
 
@@ -105,8 +103,8 @@ function Profiler.Start(excludeCalledMs)
 				local namedSource = namedSources[source]
 				if namedSource ~= nil then
 					source = namedSource
-				elseif string.sub(source, 1, 1) == "@" then
-					source = string.sub(source, 1)
+				elseif string_sub(source, 1, 1) == "@" then
+					source = string_sub(source, 1)
 				end
 				name = string_format("%q in %q, line %d", info.name or "anonymous", source, info.linedefined)
 			end
